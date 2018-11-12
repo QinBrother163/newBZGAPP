@@ -45,286 +45,270 @@
     </div>
 </template>
 <script>
-import Toast from "src/base/toast/toast_login";
-import loginValidate from "src/base/validateFeedback/loginValidate";
-import { mapGetters, mapActions } from "vuex";
-import { RegFeedBackType } from "src/assets/js/config";
-import GetPhoneCode from "src/base/getPhoneCode/getPhoneCode";
-import Qs from "qs";
-import Md5 from "md5";
+import Toast from 'src/base/toast/toast_login';
+import loginValidate from 'src/base/validateFeedback/loginValidate';
+import {mapGetters, mapActions} from 'vuex';
+import {RegFeedBackType} from 'src/assets/js/config'
+import GetPhoneCode from 'src/base/getPhoneCode/getPhoneCode';
+import Qs from 'qs';
+import Md5 from 'md5';
 export default {
-  beforeRouteEnter: (to, from, next) => {
-    document.title = "登录";
-    next();
-  },
-  data() {
-    return {
-      //是否显示弹出
-      showToast: false,
-      //弹出的描述文本
-      descText: "",
-      phone: "",
-      code: "",
-      password: "",
-      //获取验证码的次数
-      getCodeTimes: 0,
-      //
-      countDown: 0
-    };
-  },
-  computed: {
-    phoneFeedBackType: function() {
-      let reg = /^1\d{10}$/g;
-      return reg.test(this.phone)
-        ? RegFeedBackType.showSuccess
-        : RegFeedBackType.showError;
+    beforeRouteEnter: (to, from, next) => {
+        document.title = "登录";
+        next();
     },
-    codeFeedBackType: function() {
-      let reg = /^\d{6}$/g;
-      return reg.test(this.code)
-        ? RegFeedBackType.showSuccess
-        : RegFeedBackType.showError;
+    data(){
+        return {
+            //是否显示弹出
+            showToast: false,
+            //弹出的描述文本
+            descText: '',
+            phone: '',
+            code: '',
+            password: '',
+            //获取验证码的次数
+            getCodeTimes: 0,
+            //
+            countDown: 0,
+        }
     },
-    passFeedBackType: function() {
-      let reg = /^[\x00-\xff]{6,15}$/g;
-      return reg.test(this.password)
-        ? RegFeedBackType.showSuccess
-        : RegFeedBackType.showError;
+     computed:{
+        phoneFeedBackType: function(){
+            let reg  = /^1\d{10}$/g;
+            return reg.test(this.phone) ? RegFeedBackType.showSuccess : RegFeedBackType.showError;
+        },
+        codeFeedBackType: function(){
+            let reg  = /^\d{6}$/g;
+            return reg.test(this.code) ? RegFeedBackType.showSuccess : RegFeedBackType.showError;
+        },
+        passFeedBackType: function(){
+            let reg  = /^[\x00-\xff]{6,15}$/g;
+            return reg.test(this.password) ? RegFeedBackType.showSuccess : RegFeedBackType.showError;
+        },
+        isReady: function(){
+            return this.phoneFeedBackType === RegFeedBackType.showSuccess  && this.passFeedBackType === RegFeedBackType.showSuccess;
+        },
+        ...mapGetters(['prevRouter'])
     },
-    isReady: function() {
-      return (
-        this.phoneFeedBackType === RegFeedBackType.showSuccess &&
-        this.passFeedBackType === RegFeedBackType.showSuccess
-      );
-    },
-    ...mapGetters(["prevRouter"])
-  },
-  methods: {
-    closeToast() {
-      //关闭toast
-      this.showToast = false;
-    },
-    toast(descText) {
-      this.descText = descText;
-      this.showToast = true;
-    },
-    tologin() {
-      if (this.phoneFeedBackType !== RegFeedBackType.showSuccess) {
-        this.toast("手机号码格式不正确！");
-        return;
-      } else if (this.passFeedBackType !== RegFeedBackType.showSuccess) {
-        this.toast("密码格式不正确");
-        return;
-      }
-      // else if(this.codeFeedBackType !== RegFeedBackType.showSuccess){
-      //     this.toast('验证码格式不正确');
-      //     return;
-      // }
-      let params = Qs.stringify({
-        phone: this.phone,
-        //  code: this.code,
-        password: Md5(this.password)
-      });
-      // let  params = new URLSearchParams();
-      // params.append('phone', this.phone);
-      // params.append('code', this.code);
-      // params.append('password', this.password);
-
-      this.$axios
-        .post("/app/login", params)
-        .then(res => {
-          // console.log(res)
-          if (res.status === 200) {
-            if (res.data.code > 0) {
-              this.LOGIN({
-                token: res.data.data.Authorization,
-                curCount: this.phone
-              });
-              this.toast("登录成功！");
-              setTimeout(() => {
-                this.$router.replace({ path: this.prevRouter });
-              }, 500);
-
-              // if(res.data.data.operating === "REGISTER_SUCCESS"){
-              //     this.$router.replace({path: this.prevRouter});
-              // }else{
-              //     this.$router.replace({path: this.prevRouter});
-              // }
-            } else {
-              this.$alert(res.data.message)
-                .then(msg => {})
-                .catch(err => {
-                  console.log(err);
-                });
-              return;
+    methods:{
+        closeToast(){
+            //关闭toast
+            this.showToast = false;
+        },
+        toast(descText){
+            this.descText = descText;
+            this.showToast = true;
+        },
+        tologin(){
+            if(this.phoneFeedBackType !== RegFeedBackType.showSuccess){
+                 this.toast('手机号码格式不正确！');
+                 return;
+            }else if(this.passFeedBackType !== RegFeedBackType.showSuccess){
+                this.toast('密码格式不正确');
+                return;
             }
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        });
+            // else if(this.codeFeedBackType !== RegFeedBackType.showSuccess){
+            //     this.toast('验证码格式不正确');
+            //     return;
+            // }
+            let  params =  Qs.stringify({
+                 phone:  this.phone,
+                //  code: this.code,
+                 password: Md5(this.password)
+             });
+            // let  params = new URLSearchParams();
+            // params.append('phone', this.phone);
+            // params.append('code', this.code);
+            // params.append('password', this.password);
+            this.$axios.post('/app/login',params).then((res) =>{
+                // console.log(res)
+                if(res.status === 200){
+                    if(res.data.code > 0){
+                        this.LOGIN({
+                            token: res.data.data.Authorization,
+                            curCount: this.phone
+                        });
+                        this.toast('登录成功！');
+                        setTimeout(() => {
+                            this.$router.replace({path: this.prevRouter});
+                        },500)
 
-      //如果通过。发送ajax请求，成功后，跳转至记录页
+                        // if(res.data.data.operating === "REGISTER_SUCCESS"){
+                        //     this.$router.replace({path: this.prevRouter});
+                        // }else{
+                        //     this.$router.replace({path: this.prevRouter});
+                        // }
+                    }else{
+                        this.$alert(res.data.message).then((msg)=>{
+                        }).catch((err) =>{
+                            console.log(err)
+                        })
+                        return;
+                    }
+                } 
+
+            }).catch((err) =>{
+                console.log(err)
+            })
+
+            //如果通过。发送ajax请求，成功后，跳转至记录页
+        },
+        // toResetPassword(){
+        //     this.$router.push({path: '/login/resetPassword'})
+        // },
+        getCode(){
+            //在这里发送ajax请求，生成验证码
+            // let  params =  Qs.stringify({
+            //     phone:  this.phone
+            //  });
+            this.$axios.get('/app/sendSmsPwd',{
+                params:{
+                    phone:  this.phone,
+                    identity: 'login'
+                }
+            }).then((res) =>{
+                   if(res.status === 200){
+                       if(res.data.code > 0){
+                            this.toast('发送成功');
+                       }else{
+                            this.$alert(res.data.message).then((msg)=>{
+                            }).catch((err) =>{
+                                console.log(err)
+                            })
+                            return;
+                       }
+                   } 
+
+            }).catch((err) =>{
+                console.log(err)
+            })
+        },
+        ...mapActions(['LOGIN'])
+
     },
-    // toResetPassword(){
-    //     this.$router.push({path: '/login/resetPassword'})
-    // },
-    getCode() {
-      //在这里发送ajax请求，生成验证码
-      // let  params =  Qs.stringify({
-      //     phone:  this.phone
-      //  });
-      this.$axios
-        .get("/app/sendSmsPwd", {
-          params: {
-            phone: this.phone,
-            identity: "login"
-          }
-        })
-        .then(res => {
-          if (res.status === 200) {
-            if (res.data.code > 0) {
-              this.toast("发送成功");
-            } else {
-              this.$alert(res.data.message)
-                .then(msg => {})
-                .catch(err => {
-                  console.log(err);
-                });
-              return;
-            }
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
-    ...mapActions(["LOGIN"])
-  },
-  components: {
-    Toast,
-    loginValidate,
-    GetPhoneCode
-  }
-};
+    components:{
+        Toast,
+        loginValidate,
+        GetPhoneCode
+    }
+}
 </script>
 
 <style lang="scss" scoped>
-.login {
-  background: #f5f5f5;
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  .tips {
-    height: px2rem(73);
-    line-height: px2rem(73);
-    text-align: center;
-    @include font-dpr(24px);
-    .iconfont {
-      @include font-dpr(24px);
-      color: #f57f3f;
+    .login{
+        background: #f5f5f5;
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        .tips{
+            height: px2rem(73);
+            line-height: px2rem(73);
+            text-align: center;
+            @include font-dpr(24px);
+            .iconfont{
+                @include font-dpr(24px);
+                color: #f57f3f; 
+            }
+            // img{
+            //     vertical-align: middle;
+            //     padding-right: px2rem(5);
+            // }
+        }
+        input:-webkit-autofill{
+            background: #fff;
+        }
+        .input-group{
+            background: #fff;
+            box-sizing: border-box;
+            display: flex;
+            height: px2rem(96);
+            margin-bottom:  px2rem(20);
+            overflow: hidden;
+            padding:px2rem(18) px2rem(30);
+            position: relative;
+            .input_label{
+                width: px2rem(126);
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                color:#666;
+                flex-shrink: 0;
+                @include font-dpr(28px);
+            }
+            .input{
+                flex: 1;
+                @include font-dpr(32px);
+            }
+            .feedback-container{
+                position: absolute;
+                right: px2rem(28);
+                top: 50%;
+                transform: translate3d(0,-50%,0);
+            }
+           .verificationCode-container{
+                position: absolute;
+                right: px2rem(30);
+                top: 50%;
+                transform: translate3d(0,-50%,0);
+                .feedback-container{
+                    right: 110%;
+                }
+            }
+        
+        }
+        .confirm-container{
+            padding: 0 px2rem(49);
+            height: px2rem(96);
+            overflow: hidden;
+            margin-top:  px2rem(18);
+            .confirm-btn{
+                width: 100%;
+                color: #fff;
+                background-color: #d6d6d6;
+                text-align: center;
+                line-height:  px2rem(96);
+                border-radius: px2rem(48);
+                @include font-dpr(36px);
+                &.active{
+                   background-color: #5e93fc;
+                }
+            }
+        }
+        .forgetPassword{
+            margin-top:  px2rem(20);
+            text-align: center;
+            @include font-dpr(28px);
+        }
+        .register{
+            margin-top:  px2rem(20);
+            text-align: center;
+            @include font-dpr(28px);
+        }
+        .foot{
+            padding: 0 px2rem(100);
+            margin-top:  px2rem(20);
+            display: flex;
+            justify-content: space-between;
+            >div{
+                color: #999;
+                @include font-dpr(28px);
+            }
+        }
+        .toast-container{
+            position: absolute;
+            left: 50%;
+            // bottom: px2rem(287);
+            bottom: 30%;
+            transform: translate3d(-50%,0,0);
+        }
     }
-    // img{
-    //     vertical-align: middle;
-    //     padding-right: px2rem(5);
-    // }
-  }
-  input:-webkit-autofill {
-    background: #fff;
-  }
-  .input-group {
-    background: #fff;
-    box-sizing: border-box;
-    display: flex;
-    height: px2rem(96);
-    margin-bottom: px2rem(20);
-    overflow: hidden;
-    padding: px2rem(18) px2rem(30);
-    position: relative;
-    .input_label {
-      width: px2rem(126);
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-      color: #666;
-      flex-shrink: 0;
-      @include font-dpr(28px);
+    .slide-enter-active,.slide-leave-active{
+        transition: all 0.5s;
     }
-    .input {
-      flex: 1;
-      @include font-dpr(32px);
+    .slide-enter,.slide-leave-to{
+        transform: translate3d(100%,0,0);
     }
-    .feedback-container {
-      position: absolute;
-      right: px2rem(28);
-      top: 50%;
-      transform: translate3d(0, -50%, 0);
-    }
-    .verificationCode-container {
-      position: absolute;
-      right: px2rem(30);
-      top: 50%;
-      transform: translate3d(0, -50%, 0);
-      .feedback-container {
-        right: 110%;
-      }
-    }
-  }
-  .confirm-container {
-    padding: 0 px2rem(49);
-    height: px2rem(96);
-    overflow: hidden;
-    margin-top: px2rem(18);
-    .confirm-btn {
-      width: 100%;
-      color: #fff;
-      background-color: #d6d6d6;
-      text-align: center;
-      line-height: px2rem(96);
-      border-radius: px2rem(48);
-      @include font-dpr(36px);
-      &.active {
-        background-color: #5e93fc;
-      }
-    }
-  }
-  .forgetPassword {
-    margin-top: px2rem(20);
-    text-align: center;
-    @include font-dpr(28px);
-  }
-  .register {
-    margin-top: px2rem(20);
-    text-align: center;
-    @include font-dpr(28px);
-  }
-  .foot {
-    padding: 0 px2rem(100);
-    margin-top: px2rem(20);
-    display: flex;
-    justify-content: space-between;
-    > div {
-      color: #999;
-      @include font-dpr(28px);
-    }
-  }
-  .toast-container {
-    position: absolute;
-    left: 50%;
-    // bottom: px2rem(287);
-    bottom: 30%;
-    transform: translate3d(-50%, 0, 0);
-  }
-}
-.slide-enter-active,
-.slide-leave-active {
-  transition: all 0.5s;
-}
-.slide-enter,
-.slide-leave-to {
-  transform: translate3d(100%, 0, 0);
-}
 </style>
 

@@ -5,7 +5,6 @@ import InvesmentDetail from 'src/components/investment/invesmentDetail'
 Vue.use(Router)
     //采用异步加载形式
 export default new Router({
-    mode: 'history',
     routes: [{
             path: '/',
             name: 'root',
@@ -43,7 +42,7 @@ export default new Router({
         {
             path: '/investment',
             name: 'investment',
-            component: resolve => require(['src/components/investment/mall'], resolve),
+            component: resolve => require(['src/components/investment/investment'], resolve),
             children: [
                 {
                     path: 'invesmentDetail',

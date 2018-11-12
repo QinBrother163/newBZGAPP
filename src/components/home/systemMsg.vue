@@ -23,7 +23,6 @@
 <script>
 import Scroll from 'src/base/scroll/scroll';
 import Loading from 'src/base/loading/loading';
-
 export default {
     beforeRouteEnter: (to, from, next) => {
         document.title = "系统消息";
