@@ -34,7 +34,9 @@ img {
     max-width: 100%;
     margin: 0;
 }
-
+div{
+	box-sizing: border-box;
+}
 
 /* a标签的下划线 */
 

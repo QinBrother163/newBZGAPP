@@ -5,6 +5,7 @@ import InvesmentDetail from 'src/components/investment/invesmentDetail'
 Vue.use(Router)
     //采用异步加载形式
 export default new Router({
+    mode: 'history',
     routes: [{
             path: '/',
             name: 'root',
@@ -42,13 +43,18 @@ export default new Router({
         {
             path: '/investment',
             name: 'investment',
-            component: resolve => require(['src/components/investment/investment'], resolve),
+            component: resolve => require(['src/components/investment/mall'], resolve),
             children: [
                 {
                     path: 'invesmentDetail',
                     component: InvesmentDetail
                 }
             ]
+        },
+        {
+            path: '/consultProduct',
+            name: 'consultProduct',
+            component: resolve => require(['src/components/investment/consultProduct'], resolve),
         },
         {
             path: '/invermentRecord',
@@ -69,24 +75,6 @@ export default new Router({
             component: resolve => require(['src/components/me/me'], resolve)
         },
         {
-            path: '/myInvesment',
-            component: resolve => require(['src/components/me/myInvesment'], resolve),
-            children: [
-                {
-                    path: 'myInvesmentDetail',
-                    component: resolve => require(['src/components/me/myInvesmentDetail'], resolve)
-                }
-            ]
-        },
-        // {
-        //     path: '/myInvesmentDetail',
-        //     component: resolve => require(['src/components/me/myInvesmentDetail'], resolve)
-        // },
-        {
-            path: '/monitor',
-            component: resolve => require(['src/components/me/monitor'], resolve)
-        },
-        {
             path: '/myInfoCenter',
             component: resolve => require(['src/components/me/myInfoCenter'], resolve),
             children: [{
@@ -101,29 +89,58 @@ export default new Router({
             ]
         },
         {
-            path: '/myFortune',
-            component: resolve => require(['src/components/me/myFortune'], resolve),
-            children: [{
-                path: 'recommendReward',
-                component: resolve => require(['src/components/me/child/recommendReward'], resolve)
-
-            }]
+            path: '/myHistory',
+            name: 'myHistory',
+            component: resolve => require(['src/components/me/myHistory'], resolve)
+        },
+        {
+            path: '/myOrderInfo',
+            name: 'myOrderInfo',
+            component: resolve => require(['src/components/me/myOrderInfo'], resolve)
+        },
+        {
+            path: '/myAfterSaleService',
+            name: 'myAfterSaleService',
+            component: resolve => require(['src/components/me/myAfterSaleService'], resolve)
+        },
+        {
+            path: '/myRefundInfo',
+            name: 'myRefundInfo',
+            component: resolve => require(['src/components/me/myRefundInfo'], resolve)
+        },
+        {
+            path: '/myAmendPhone',
+            name: 'myAmendPhone',
+            component: resolve => require(['src/components/me/myAmendPhone'], resolve)
+        },
+        {
+            path: '/myVerifyPhone',
+            name: 'myVerifyPhone',
+            component: resolve => require(['src/components/me/myVerifyPhone'], resolve)
+        },
+        {
+            path: '/clearAddress',
+            name: 'clearAddress',
+            component: resolve => require(['src/components/me/clearAddress'], resolve)
         },
         {
             path: '/myRewards',
             component: resolve => require(['src/components/me/myRewards'], resolve),
             children: [{
                     path: 'ableUseRewards',
+                    name: 'ableUseRewards',
                     component: resolve => require(['src/components/me/child/ableUseRewards'], resolve)
                 },
                 {
                     path: 'usedRewards',
+                    name: 'usedRewards',
                     component: resolve => require(['src/components/me/child/usedRewards'], resolve)
                 },
                 {
                     path: 'overtimeRewards',
+                    name: 'overtimeRewards',
                     component: resolve => require(['src/components/me/child/overtimeRewards'], resolve)
-                }
+                },
             ]
         },
         {
@@ -135,10 +152,6 @@ export default new Router({
                 component: resolve => require(['src/components/cars/carDetail'], resolve)
             }]
         },
-        // {
-        //     path: '/carDetail',
-        //     component: resolve => require(['src/components/cars/carDetail'], resolve)
-        // },
         {
             path: '/myBankCards',
             component: resolve => require(['src/components/fortuneCenter/myBankCards'], resolve)
@@ -166,12 +179,5 @@ export default new Router({
             }]
 
         },
-        {
-            path: '/realNameCertification',
-            component: resolve => require(['src/components/me/realNameCertification'], resolve)
-
-        },
-
-
     ]
 })

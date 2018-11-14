@@ -1,20 +1,21 @@
 <template>
     <div class="particulars">
-        <div class="info" v-if="!isEmpty">
+        <div class="info" v-if="isEmpty">
             <div class="item">
-                <p class="title">汽车位置</p>
-                <p class="content">{{pContent.carLocation}}</p>
-            </div>
-            <div class="item">
-                <p class="title">汽车信息</p>
-                <p class="content">{{pContent.carInfo}}</p>
-            </div>
-            <div class="item">
-                <p class="title">项目介绍</p>
-                <p class="content">{{pContent.introduction}}</p>
+                <p class="title">
+                    超大面积全景天窗开启迷人全新视野，吸纳更多阳光，
+                    营造宽敞明亮的时尚车内空间。如果光线过亮，可使用电动卷轴阳帘遮蔽。
+                    高厚度钢化玻璃，不仅提升车顶安全性，更会挡住噪音，保证车内静谧高雅的氛围。
+                </p>
+                <img class="img_info" src="http://vw.faw-vw.com/models/tayron/img/exterior-bottom-img.jpg">
+                <p class="title">
+                    全系后排座椅可前后移动18CM，靠背角度在25.75度范围内实现无极调节，
+                    灵活营造车内宽大舒适空间。后排座椅还支持4/2/4分折叠放倒，根据行李大小，
+                    自由拓展车内空间，使您的旅程畅然惬意。
+                </p>
             </div>
         </div>
-        <div class="noInfo" v-if="isEmpty">
+        <div class="noInfo" v-if="!isEmpty">
             <div class="item">
                 <p class="title">汽车信息</p>
                 <div class="img-container">
@@ -70,19 +71,19 @@ export default {
     // flex-shrink: 0;
     // width: 100vw;
     box-sizing: border-box;
-    padding: px2rem(28) px2rem(28) px2rem(88);
+    padding: px2rem(28) px2rem(28) px2rem(28);
     .item{
         margin-bottom: px2rem(60);
         text-align: left;
         @include font-dpr(28px);
         .title{
-            color: #333333;
+            color: #666666;
             margin-bottom: px2rem(20);
-            font-weight: 700;
+            font-weight: 200;
         }
-        .content{
-            color:#666666;
-            line-height: 1.4em;
+        .img_info{
+            width: 100%;
+            height: px2rem(360);
         }
     }
     .noInfo{

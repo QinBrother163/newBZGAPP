@@ -1,61 +1,75 @@
 @import './base.css';
 @import '../icon-font/iconfont.css';
 $design-width: 750;
-@function px2rem( $px) {
-    @return ($px/$design-width*10) * 1rem; //对应js 
+
+@function px2rem($px) {
+  @return ($px/$design-width*10) * 1rem; //对应js 
 }
 
 @mixin font-dpr($font-size) {
-    font-size: $font-size*0.5;
-    [data-dpr="2"] & {
-        font-size: $font-size;
-    }
-    [data-dpr="3"] & {
-        font-size: $font-size *1.5;
-    }
+  font-size: $font-size*0.5;
+
+  [data-dpr="2"] & {
+    font-size: $font-size;
+  }
+
+  [data-dpr="3"] & {
+    font-size: $font-size *1.5;
+  }
 }
 
 @mixin img-dpr($url) {
-    background-image: url($url+'@1x.png');
-    [data-dpr="2"] & {
-        background-image: url($url+'@2x.png');
-    }
-    [data-dpr="3"] & {
-        background-image: url($url+'@3x.png');
-    }
+  background-image: url($url+'@1x.png');
+
+  [data-dpr="2"] & {
+    background-image: url($url+'@2x.png');
+  }
+
+  [data-dpr="3"] & {
+    background-image: url($url+'@3x.png');
+  }
 }
 
 //1px细线
 @mixin border-1px($color) {
-    position: relative;
-    &:after {
-        display: block;
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        width: 100%;
-        border-top: 1px solid $color;
-        content: ' ';
-    }
+  position: relative;
+
+  &:after {
+    display: block;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    border-top: 1px solid $color;
+    content: ' ';
+  }
 }
 
 //多行文本省略
 @mixin ml-ellipsis($lineNum) {
-    // display: flex;
-    // flex-direction: column;
-    overflow: hidden;
-    -webkit-line-clamp: $lineNum;
-    // white-space: nowrap;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
+  // display: flex;
+  // flex-direction: column;
+  overflow: hidden;
+  -webkit-line-clamp: $lineNum;
+  // white-space: nowrap;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+}
+
+@mixin page() {
+  width: 100vw;
+  height: 100vh;
+  background-color: #fff;
+  overflow: hidden;
+  position: relative;
 }
 
 //单行文本省略
 @mixin sl-ellipsis() {
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 // @media (-webkit-min-device-pixel-ratio: 1.5),
@@ -77,24 +91,57 @@ $design-width: 750;
 //     }
 // }
 [v-cloak] {
-    display: none;
+  display: none;
 }
 
 //vue动画
 .fade-enter-active,
 .fade-leave-active {
-    transition: all 0.5s;
+  transition: all 0.5s;
 }
 
 .fade-enter,
 .fade-leave-to {
-    opacity: 0;
+  opacity: 0;
 }
 
 //播放条样式
 .vjs-has-started .vjs-control-bar {
-    height: px2rem(80);
-    @include font-dpr(32px);
+  height: px2rem(80);
+  @include font-dpr(32px);
 }
 
 // @import './alert.scss';
+
+// color
+$c-f57: #f57f3f;
+$c-f98: #ff9800;
+$c-5f9: #5f93fc;
+$c-f55: #f5f5f5;
+$c-fff: #fff;
+$c-eee: #eee;
+$c-999: #999;
+$c-666: #666;
+$c-333: #333;
+// font
+$f-s30: px2rem(30);
+$f-s28: px2rem(28);
+$f-s26: px2rem(26);
+$f-s24: px2rem(24);
+$f-s22: px2rem(22);
+$f-s20: px2rem(20);
+
+// line
+@mixin maxLine() {
+  width: 100%;
+  height: px2rem(15);
+  background-color: $c-eee;
+}
+
+// 文字提示 hint
+@mixin hintLine() {
+  width: 100%;
+  text-align: center;
+  font-size: px2rem(22);
+  color: $c-999;
+}

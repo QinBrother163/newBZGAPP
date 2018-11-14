@@ -12,6 +12,7 @@ module.exports = {
         assetsPublicPath: '/',
         proxyTable: {
             '/api/': {
+                // target: 'http://192.168.1.135:3000',
                 target: 'http://192.168.2.188:8080',
                 changeOrigin: true, // 如果接口跨域，需要进行这个参数配置
                 pathRewrite: {
@@ -22,12 +23,12 @@ module.exports = {
 
         // Various Dev Server settings
         // host: 'localhost', // can be overwritten by process.env.HOST
-        host: '192.168.2.134',
+        host: '192.168.2.165',
         // host: '192.168.0.110',
 
 
         port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
-        autoOpenBrowser: false,
+        autoOpenBrowser: true,
         errorOverlay: true,
         notifyOnErrors: true,
         poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-

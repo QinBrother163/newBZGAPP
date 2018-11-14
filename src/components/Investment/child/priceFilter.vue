@@ -1,8 +1,15 @@
 <template>
+    <div class="widgets_cover">
+      <div class="cover_bg" @click="closeShow"></div>
+      <div class="cover_content">
+      
     <div class="price-filter">
+      
         <div class="item" v-for="(item,index) in list" :key="index" @click.stop="sort(item,index)"   >
             {{item.title}}
         </div>
+      </div>
+    </div>
     </div>
 </template>
 <script>
@@ -53,11 +60,41 @@ export default {
     sort(item, index) {
       this.curIndex = index;
       this.$emit("getThreeNavIndex", index);
-    }
+    },
+
+    // 关闭元素
+    closeShow(){
+      this.$emit("closeShow");
+    },
   }
 };
 </script>
 <style lang="scss" scoped>
+.widgets_cover {
+  position: fixed;
+  top: px2rem(150);
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  .cover_bg {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  .cover_content {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: px2rem(850);
+    top: 0;
+    background-color: #fff;
+  }
+}
 .price-filter {
   background-color: #fff;
   display: grid;
@@ -66,6 +103,7 @@ export default {
   grid-gap: px2rem(10) px2rem(10);
   grid-auto-flow: row;
   padding: px2rem(20);
+
   .item {
     display: flex;
     justify-content: center;

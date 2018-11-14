@@ -12,3 +12,7 @@ export const LOGOUT = ({ commit }) => {
     commit(types.SET_CURCOUNT, null);
     commit(types.SET_TOKEN, null);
 }
+
+export const TEST = ({commit})=>{
+    console.log(6666)
+}

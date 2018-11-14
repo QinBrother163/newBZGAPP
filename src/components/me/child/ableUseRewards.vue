@@ -14,7 +14,7 @@ import BaseReward from './baseReward';
 export default {
     methods:{
         useReward(rewardId){
-            
+            console.log(rewardId);
         }
     },
     components:{

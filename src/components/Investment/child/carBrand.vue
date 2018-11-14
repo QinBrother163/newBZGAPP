@@ -1,9 +1,9 @@
 <template>
     <div class="carBrand">
-        <div class="item" v-for="brand in list" :key="brand[0]" :dataNum="brand[1].length"
+        <div class="item" v-for="(brand) in list" :key="brand[0].num" :dataNum="brand[1].length"
             >
-            <p class="barnd_title" :ref="brand[0]">{{brand[0]}}</p>
-            <p @click.stop="sort(car.name)" v-for="(car) in brand[1]" :key="car.id" class="barnd_name">{{car.name}}</p>
+            <p @click="btnTitle(brand[0])" class="barnd_title" :ref="brand[0].name">{{brand[0].name}}</p>
+            <p v-if="!brand[0].open" @click.stop="sort(car.name,car.firstChar)" v-for="(car) in brand[1]" :key="car.id" class="barnd_name">{{car.name}}</p>
         </div>
     </div>
 </template>
@@ -11,31 +11,44 @@
 export default {
   props: {
     carBrandList: Array,
-    elementIndex:String
+    elementIndex: String
   },
 
   data() {
     return {
-      list: []
+      list: [],
     };
   },
   mounted() {
     this._getCarBrandData();
+
+    console.log(this.list);
   },
   watch: {
-    elementIndex (val) {
-      this.$emit('singleLetter', this.$refs[val][0]);
+    elementIndex(val) {
+      this.$emit("singleLetter", this.$refs[val][0]);
     }
   },
   methods: {
-    sort(e) {
+    sort(e, vul) {
       this.$emit("getThreeNavIndex", e);
     },
-
+    btnTitle(item) {
+      if (item.open === false) {
+        this.$set(item, "open", true);
+      } else {
+        item.open = !item.open;
+      }
+      this.$refs.listScroll.refresh();
+    },
     _getCarBrandData() {
       const arr = [
         [
-          "A",
+          {
+            name: "A",
+            open: false,
+            num: 0
+          },
           [
             {
               id: 0,
@@ -85,7 +98,11 @@ export default {
           ]
         ],
         [
-          "B",
+          {
+            name: "B",
+            open: false,
+            num: 1
+          },
           [
             {
               id: 9,
@@ -145,7 +162,11 @@ export default {
           ]
         ],
         [
-          "C",
+          {
+            name: "C",
+            open: false,
+            num: 2
+          },
           [
             {
               id: 20,
@@ -178,7 +199,7 @@ export default {
               firstChar: "C"
             },
             {
-              id:26,
+              id: 26,
               name: "本田71",
               firstChar: "C"
             },
@@ -195,7 +216,11 @@ export default {
           ]
         ],
         [
-          "D",
+          {
+            name: "D",
+            open: false,
+            num: 3
+          },
           [
             {
               id: 200,
@@ -228,7 +253,7 @@ export default {
               firstChar: "D"
             },
             {
-              id:206,
+              id: 206,
               name: "本田71",
               firstChar: "D"
             },
@@ -245,7 +270,11 @@ export default {
           ]
         ],
         [
-          "E",
+          {
+            name: "E",
+            open: false,
+            num: 4
+          },
           [
             {
               id: 2110,
@@ -278,7 +307,7 @@ export default {
               firstChar: "E"
             },
             {
-              id:216,
+              id: 216,
               name: "本田71",
               firstChar: "E"
             },
@@ -306,6 +335,7 @@ export default {
 .carBrand {
   width: 100%;
   background-color: #fff;
+  z-index: 9999;
   .item {
     .barnd_title {
       height: px2rem(40);
